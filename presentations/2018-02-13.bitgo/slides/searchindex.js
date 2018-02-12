@@ -1,1 +1,1 @@
-Search.setIndex({docnames:["index"],envversion:52,filenames:["index.rst"],objects:{},objnames:{},objtypes:{},terms:{index:0,modul:0,page:0,search:0},titles:["Welcome to Deploying Zcash\u2019s documentation!"],titleterms:{deploi:0,document:0,indic:0,tabl:0,welcom:0,zcash:0}})
+Search.setIndex({docnames:["index"],envversion:52,filenames:["index.rst"],objects:{},objnames:{},objtypes:{},terms:{hello:0,index:[],modul:[],page:[],search:[],world:0},titles:["Deploying Zcash"],titleterms:{deploi:0,document:[],indic:[],tabl:[],welcom:[],zcash:0}})
