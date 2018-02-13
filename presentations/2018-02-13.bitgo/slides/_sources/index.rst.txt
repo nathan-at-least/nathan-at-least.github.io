@@ -32,7 +32,7 @@ What
 
 - a permissionless private cryptocurrency
 - derived from Bitcoin design + code
-- with zkSNARK cryptography for strong privacy
+- with zkSNARKs for strong privacy
 
 Who - The Zcash Company
 -----------------------
@@ -49,22 +49,42 @@ Who - The Zcash Foundation
 ..
 
   the first public charity dedicated to building internet payments and
-  privacy infrastructure for the public good
+  privacy infrastructure for the public good [1]_
 
 - US 501(c)(3)
 - Governance
 - Zcon0
-- Grants (privacy research, partial second implementation, +more)
+- Grants (privacy research, partial second implementation, +more) [2]_
 
 .. [1] Quote from https://z.cash.foundation/blog/zcash-foundation-officially-nonprofit/
+.. [2] 2017 grant recipients: https://z.cash.foundation/blog/grant-awards/
 
 Who - Community Contributors
 ----------------------------
 
 Community contributors develop and operate:
 
-- The most popular full node (`zcash4win`)
+- Most full-nodes use community ports, ie: `Zcash4win`
 - Block explorers
 - Tor infrastructure
 
 A notable subset are pseudonymous.
+
+Who - Industry
+--------------
+
+Strong industry support:
+
+- hardware wallet support - `Trezor`, `Ledger`
+- exchange support - including 5 direct fiat pairs
+- financial institutions - ex: `Zcash Investment Trust`
+
+Roadmap
+=======
+
+Protocol Milestones
+-------------------
+
+- `1.0.x Sprout` - first gen zkSNARKs - 2016-10-28
+- `1.1.x Overwinter` - upgrade robustness - 2018 Q2
+- `2.0.x Sapling` - second gen zkSNARK - 2018 Q4

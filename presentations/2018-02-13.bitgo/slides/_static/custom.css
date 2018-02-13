@@ -1,5 +1,13 @@
+.footnote-reference {
+  font-size: 0.5em;
+}
+
 .docutils.footnote {
   font-size: 0.5em;
+}
+
+table.docutils.footnote {
+    margin-top: 15px;
 }
 
 q {
