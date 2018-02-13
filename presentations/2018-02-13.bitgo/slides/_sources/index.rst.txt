@@ -210,7 +210,7 @@ Roadmap
 -------
 
 - `1.0.x Sprout` - first gen zkSNARKs - 2016-10-28
-- `1.1.x Overwinter` - upgrade robustness - 2018 Q2
+- `1.1.x Overwinter` - upgrade robustness - 2018 Q3
 - `2.0.x Sapling` - second gen zkSNARK - 2018 Q4
 
 Sprout Support
@@ -224,24 +224,99 @@ Supporting `1.0.x Sprout` shielded addresses requires using the ``z_*``
 RPC calls, and designing your infrastructure to accommodate the resource
 requirements.
 
-FIXME: How to choose to support?
+Sprout Gotchas
+--------------
 
-Overwinter Support
-------------------
+- Different, non-backwards compatible async APIs.
+- ``z_sendmany`` requires ~1.7 GiB RAM and ~35 seconds on my 4 core
+  laptop.
+- Block indexing time is ``O(T⋅Z)`` with ``T`` transactions and ``Z``
+  shielded addresses.
+
+Sapling upgrade will improve both issues drastically.
+
+Overwinter Overview
+-------------------
 
 The `1.1.x Overwinter` series introduces a network protocol upgrade
 primarily focused on safety for future upgrades.
 
-FIXME: How to support.
+- Activates 2018 Q3
+- The first testnet release comes out next week (2017-02-19)
 
-FIXME: test plan and schedule.
+Features:
+
+- chainsplit replay protection
+- transaction expiry by block height
+- fixes quadratic cost of ``SIGHASH_ALL`` from Bitcoin (adapted from segwit)
+- rollback "circuit breaker" (not consensus, but important)
+
+Overwinter Support
+------------------
+
+We recommend this as Phase 2 of Zcash integration rather than `1.0.x
+Sprout` support. This puts services and vendors on track for a safe and
+smooth `2.0.x Sapling` upgrade.
+
+Primary complexity:
+
+- change to parser
+- change to signing and signature verification
+- expiration logic and retry UX / behavior from users
+
+
+Sapling Overview
+----------------
+
+The `2.0.x Sapling` upgrade introduces major performance and security
+improvements to the zkSNARK layer.
+
+- Activates 2018 Q4
+- Testnet release scheduled by June 2018.
+
+Features:
+
+- Proofs in < ~10 seconds and ~40 MiB RAM
+- ``O(1)`` indexing for any number of shielded addresses
+- Smaller shielded addresses with forwards compatibility for new protocol upgrades
+- Mobile support (not consensus, but important)
 
 Sapling Support
 ---------------
 
-FIXME: How to choose to support?
+Early / prototype phase.
 
-FIXME
------
+- We are exploring the changes to the RPC interface that work best for
+  major consumers.
+- We are working on mobile platform support.
+- There is early work on a separate full node implementation.
 
-finish this.
+Network Upgrades
+----------------
+
+Our plan for network upgrades:
+
+- network upgrades alter consensus rules [#]_
+- fixed activation height >3 months after production code releases
+- `autosenescence` approach to long legacy code tail
+- entire ecosystem knows the date/time and users know the activation plan
+- which gets called "Zcash" is unambiguously centrally controlled via
+  trademark
+- alternative chainsplits are possible with strong user protection and
+  minimized market disruption
+
+.. [#] Many would call these "hard forks" but "fork" is three-way
+       ambiguous (!) and confuses many people.
+
+Comments/Questions?
+===================
+
+Summary:
+
+- We advise integrating Bitcoin-layer first
+- A "safety" network upgrade is coming, `1.1.x Overwinter`
+- Then a second-generation privacy upgrade, `2.0.x Sapling`
+
+Questions/Comments?
+
+email (high latency!) `nathan AT z DOT cash`

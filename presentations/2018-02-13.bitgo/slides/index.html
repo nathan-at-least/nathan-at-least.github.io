@@ -75,10 +75,11 @@
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#deploying-zcash" id="id7">Deploying Zcash</a><ul>
-<li><a class="reference internal" href="#overview" id="id8">Overview</a></li>
-<li><a class="reference internal" href="#integrating-zcash" id="id9">Integrating Zcash</a></li>
-<li><a class="reference internal" href="#zcash-integration-future-work" id="id10">Zcash Integration Future Work</a></li>
+<li><a class="reference internal" href="#deploying-zcash" id="id9">Deploying Zcash</a><ul>
+<li><a class="reference internal" href="#overview" id="id10">Overview</a></li>
+<li><a class="reference internal" href="#integrating-zcash" id="id11">Integrating Zcash</a></li>
+<li><a class="reference internal" href="#zcash-integration-future-work" id="id12">Zcash Integration Future Work</a></li>
+<li><a class="reference internal" href="#comments-questions" id="id13">Comments/Questions?</a></li>
 </ul>
 </li>
 </ul>
@@ -394,7 +395,7 @@ proofs.</p>
 
 <ul class="simple">
 <li><cite>1.0.x Sprout</cite> - first gen zkSNARKs - 2016-10-28</li>
-<li><cite>1.1.x Overwinter</cite> - upgrade robustness - 2018 Q2</li>
+<li><cite>1.1.x Overwinter</cite> - upgrade robustness - 2018 Q3</li>
 <li><cite>2.0.x Sapling</cite> - second gen zkSNARK - 2018 Q4</li>
 </ul>
 
@@ -412,7 +413,45 @@ adoption.</p>
 <p>Supporting <cite>1.0.x Sprout</cite> shielded addresses requires using the <code class="docutils literal"><span class="pre">z_*</span></code>
 RPC calls, and designing your infrastructure to accommodate the resource
 requirements.</p>
-<p>FIXME: How to choose to support?</p>
+
+
+
+
+</article>
+<article class="slide level-3" id="sprout-gotchas">
+
+<h3>Sprout Gotchas</h3>
+
+<ul class="simple">
+<li>Different, non-backwards compatible async APIs.</li>
+<li><code class="docutils literal"><span class="pre">z_sendmany</span></code> requires ~1.7 GiB RAM and ~35 seconds on my 4 core
+laptop.</li>
+<li>Block indexing time is <code class="docutils literal"><span class="pre">O(T⋅Z)</span></code> with <code class="docutils literal"><span class="pre">T</span></code> transactions and <code class="docutils literal"><span class="pre">Z</span></code>
+shielded addresses.</li>
+</ul>
+<p>Sapling upgrade will improve both issues drastically.</p>
+
+
+
+
+</article>
+<article class="slide level-3" id="overwinter-overview">
+
+<h3>Overwinter Overview</h3>
+
+<p>The <cite>1.1.x Overwinter</cite> series introduces a network protocol upgrade
+primarily focused on safety for future upgrades.</p>
+<ul class="simple">
+<li>Activates 2018 Q3</li>
+<li>The first testnet release comes out next week (2017-02-19)</li>
+</ul>
+<p>Features:</p>
+<ul class="simple">
+<li>chainsplit replay protection</li>
+<li>transaction expiry by block height</li>
+<li>fixes quadratic cost of <code class="docutils literal"><span class="pre">SIGHASH_ALL</span></code> from Bitcoin (adapted from segwit)</li>
+<li>rollback “circuit breaker” (not consensus, but important)</li>
+</ul>
 
 
 
@@ -422,10 +461,37 @@ requirements.</p>
 
 <h3>Overwinter Support</h3>
 
-<p>The <cite>1.1.x Overwinter</cite> series introduces a network protocol upgrade
-primarily focused on safety for future upgrades.</p>
-<p>FIXME: How to support.</p>
-<p>FIXME: test plan and schedule.</p>
+<p>We recommend this as Phase 2 of Zcash integration rather than <cite>1.0.x
+Sprout</cite> support. This puts services and vendors on track for a safe and
+smooth <cite>2.0.x Sapling</cite> upgrade.</p>
+<p>Primary complexity:</p>
+<ul class="simple">
+<li>change to parser</li>
+<li>change to signing and signature verification</li>
+<li>expiration logic and retry UX / behavior from users</li>
+</ul>
+
+
+
+
+</article>
+<article class="slide level-3" id="sapling-overview">
+
+<h3>Sapling Overview</h3>
+
+<p>The <cite>2.0.x Sapling</cite> upgrade introduces major performance and security
+improvements to the zkSNARK layer.</p>
+<ul class="simple">
+<li>Activates 2018 Q4</li>
+<li>Testnet release scheduled by June 2018.</li>
+</ul>
+<p>Features:</p>
+<ul class="simple">
+<li>Proofs in &lt; ~10 seconds and ~40 MiB RAM</li>
+<li><code class="docutils literal"><span class="pre">O(1)</span></code> indexing for any number of shielded addresses</li>
+<li>Smaller shielded addresses with forwards compatibility for new protocol upgrades</li>
+<li>Mobile support (not consensus, but important)</li>
+</ul>
 
 
 
@@ -435,17 +501,57 @@ primarily focused on safety for future upgrades.</p>
 
 <h3>Sapling Support</h3>
 
-<p>FIXME: How to choose to support?</p>
+<p>Early / prototype phase.</p>
+<ul class="simple">
+<li>We are exploring the changes to the RPC interface that work best for
+major consumers.</li>
+<li>We are working on mobile platform support.</li>
+<li>There is early work on a separate full node implementation.</li>
+</ul>
 
 
 
 
 </article>
-<article class="slide level-3" id="fixme">
+<article class="slide level-3" id="network-upgrades">
 
-<h3>FIXME</h3>
+<h3>Network Upgrades</h3>
 
-<p>finish this.</p>
+<p>Our plan for network upgrades:</p>
+<ul class="simple">
+<li>network upgrades alter consensus rules <a class="footnote-reference" href="#id8" id="id7">[4]</a></li>
+<li>fixed activation height &gt;3 months after production code releases</li>
+<li><cite>autosenescence</cite> approach to long legacy code tail</li>
+<li>entire ecosystem knows the date/time and users know the activation plan</li>
+<li>which gets called “Zcash” is unambiguously centrally controlled via
+trademark</li>
+<li>alternative chainsplits are possible with strong user protection and
+minimized market disruption</li>
+</ul>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[4]</a></td><td>Many would call these “hard forks” but “fork” is three-way
+ambiguous (!) and confuses many people.</td></tr>
+</tbody>
+</table>
+
+
+
+
+</article>
+<article class="slide level-2" id="comments-questions">
+
+<h2>Comments/Questions?</h2>
+
+<p>Summary:</p>
+<ul class="simple">
+<li>We advise integrating Bitcoin-layer first</li>
+<li>A “safety” network upgrade is coming, <cite>1.1.x Overwinter</cite></li>
+<li>Then a second-generation privacy upgrade, <cite>2.0.x Sapling</cite></li>
+</ul>
+<p>Questions/Comments?</p>
+<p>email (high latency!) <cite>nathan AT z DOT cash</cite></p>
 
 
 
