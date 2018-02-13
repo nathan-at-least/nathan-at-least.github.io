@@ -3,11 +3,68 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Deploying Zcash
-===============
+=================
+ Deploying Zcash
+=================
 
-Hello World
+`Nathan Wilcox`
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+`The Zcash Company`
+
+Overview
+========
+
+Outline
+-------
+
+.. contents::
+   :depth: 2
+
+Why
+---
+
+- Privacy is a human right.
+- Privacy needs to be constructed at the base layer.
+- Permissionlessness and censorship resistance require privacy.
+
+What
+----
+
+- a permissionless private cryptocurrency
+- derived from Bitcoin design + code
+- with zkSNARK cryptography for strong privacy
+
+Who - The Zcash Company
+-----------------------
+
+- US for profit company
+- founded by leading cryptographers and security engineers
+- currently primary Zcash protocol development team
+- enterprise arm does non-Zcash projects involving zeroknowledge
+  cryptography
+
+Who - The Zcash Foundation
+--------------------------
+
+..
+
+  the first public charity dedicated to building internet payments and
+  privacy infrastructure for the public good
+
+- US 501(c)(3)
+- Governance
+- Zcon0
+- Grants (privacy research, partial second implementation, +more)
+
+.. [1] Quote from https://z.cash.foundation/blog/zcash-foundation-officially-nonprofit/
+
+Who - Community Contributors
+----------------------------
+
+Community contributors develop and operate:
+
+- The most popular full node (`zcash4win`)
+- Block explorers
+- Tor infrastructure
+
+A notable subset are pseudonymous.
