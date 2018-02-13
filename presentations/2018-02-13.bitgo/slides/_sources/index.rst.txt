@@ -79,12 +79,169 @@ Strong industry support:
 - exchange support - including 5 direct fiat pairs
 - financial institutions - ex: `Zcash Investment Trust`
 
-Roadmap
-=======
+Integrating Zcash
+=================
 
-Protocol Milestones
+Integration Phases
+------------------
+
+We strongly advise rolling out Zcash support in this order (phases
+explained later):
+
+#. `Transparent Address` support only (described later)
+#. Protocol Upgrade support
+#. `Shielded Address` support
+
+Protocol Basics
+---------------
+
+Zcash uses the Bitcoin protocol with some modifications:
+
+- proof-of-work: Equihash
+- block target time: 150 seconds
+- block size limit: 2 MB
+- addition of zkSNARK proofs
+- ... plus other tweaks to consensus rules.
+
+Addresses
+---------
+
+There are two kinds of addresses:
+
+- `Transparent Addresses` aka `t-addrs`, ``t-`` prefix
+- `Shielded Addresses` aka `z-addrs`, ``z-`` prefix
+
+T Addresses
+-----------
+
+Transparent addresses are literally Bitcoin addresses [3]_, except the
+encoding requires they begin with a ``t-`` prefix. The remainder of the
+encoding ensures the Bitcoin address classification.
+
+Example: ``t3Vz22vK5z2LcKEdg16Yv4FFneEL1zg9ojd``
+
+This is a t-addr. The initial ``3`` indicates a `P2SH` address.
+
+.. [3] No BECH-32 addresses, currently.
+
+Z Addresses
+-----------
+
+Shielded addresses begin with a ``z-`` and use zkSNARK technology.
+
+We recommend deploying support for T Addresses only, initially.
+
+Software
+--------
+
+- The primary software is `zcashd`, a source-fork of Bitcoin Core v0.11.2.
+- Changes have been relatively conservative. Examples:
+
+  + disabled QT wallet
+  + disabled support for platforms we can't audit/test/focus on
+  + backporting focused on security, testability, cleanup
+
+API
+---
+
+- The primary API is the RPC interface, derived from Bitcoin v0.11.2.
+- Most calls are unaltered, except for safety or simplicity.
+
+  + ex: `accounts` feature disabled.
+
+- Many API consumers who support Bitcoin can do "drop-in" Zcash support.
+
+  + ex: `getnewaddress`, `sendmany`, `listunspent`
+
+- Shielded address support is all in new RPC calls with a ``z_`` prefix.
+
+API Changes
+-----------
+
+Some Bitcoin RPC calls will be necessarily different. The most prominent
+is transaction format and semantics.
+
+If your service or product does transaction parsing, inspection, or
+signing for Bitcoin, supporting Zcash is slightly more work.
+
+Transaction Format
+------------------
+
+.. code:: C++
+
+    class CTransaction
+    {
+        // …
+
+        // Bitcoin fields:
+        const int32_t nVersion;
+        const std::vector<CTxIn> vin;
+        const std::vector<CTxOut> vout;
+        const uint32_t nLockTime;
+
+        // Zcash specific:
+        const std::vector<JSDescription> vjoinsplit;
+        const uint256 joinSplitPubKey;
+        const joinsplit_sig_t joinSplitSig = {{0}};
+        // …
+    };
+
+Transaction Parsing
 -------------------
+
+If you primarily care about `vin` / `vout`, for example, to track the
+balances of addresses, you can ignore the contents of the Zcash fields.
+
+If you need to track fees or global monetary supply, you need to parse
+fields within `vjoinsplit`. This is fairly straight forward and Zcash
+devs would love to help.
+
+We've created JS libraries, source-forked block explorers, and worked
+with wallet makers to do this parsing task.
+
+WARNING: This all assumes you are relying on `zcashd` to validate
+transaction consensus rules, which does the work of verifying zkSNARK
+proofs.
+
+Zcash Integration Future Work
+=============================
+
+Roadmap
+-------
 
 - `1.0.x Sprout` - first gen zkSNARKs - 2016-10-28
 - `1.1.x Overwinter` - upgrade robustness - 2018 Q2
 - `2.0.x Sapling` - second gen zkSNARK - 2018 Q4
+
+Sprout Support
+--------------
+
+The `1.0.x Sprout` series is the currently launched "first generation"
+protocol. Shielded addresses are resource intensive and have seen modest
+adoption.
+
+Supporting `1.0.x Sprout` shielded addresses requires using the ``z_*``
+RPC calls, and designing your infrastructure to accommodate the resource
+requirements.
+
+FIXME: How to choose to support?
+
+Overwinter Support
+------------------
+
+The `1.1.x Overwinter` series introduces a network protocol upgrade
+primarily focused on safety for future upgrades.
+
+FIXME: How to support.
+
+FIXME: test plan and schedule.
+
+Sapling Support
+---------------
+
+FIXME: How to choose to support?
+
+FIXME
+-----
+
+finish this.

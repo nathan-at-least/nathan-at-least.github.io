@@ -75,9 +75,10 @@
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#deploying-zcash" id="id5">Deploying Zcash</a><ul>
-<li><a class="reference internal" href="#overview" id="id6">Overview</a></li>
-<li><a class="reference internal" href="#roadmap" id="id7">Roadmap</a></li>
+<li><a class="reference internal" href="#deploying-zcash" id="id7">Deploying Zcash</a><ul>
+<li><a class="reference internal" href="#overview" id="id8">Overview</a></li>
+<li><a class="reference internal" href="#integrating-zcash" id="id9">Integrating Zcash</a></li>
+<li><a class="reference internal" href="#zcash-integration-future-work" id="id10">Zcash Integration Future Work</a></li>
 </ul>
 </li>
 </ul>
@@ -193,24 +194,258 @@ privacy infrastructure for the public good </q>
 
 
 </article>
-<article class="slide level-2" id="roadmap">
+<article class="slide level-2" id="integrating-zcash">
 
-<h2>Roadmap</h2>
+<h2>Integrating Zcash</h2>
 
 
 
 
 
 </article>
-<article class="slide level-3" id="protocol-milestones">
+<article class="slide level-3" id="integration-phases">
 
-<h3>Protocol Milestones</h3>
+<h3>Integration Phases</h3>
+
+<p>We strongly advise rolling out Zcash support in this order (phases
+explained later):</p>
+<ol class="arabic simple">
+<li><cite>Transparent Address</cite> support only (described later)</li>
+<li>Protocol Upgrade support</li>
+<li><cite>Shielded Address</cite> support</li>
+</ol>
+
+
+
+
+</article>
+<article class="slide level-3" id="protocol-basics">
+
+<h3>Protocol Basics</h3>
+
+<p>Zcash uses the Bitcoin protocol with some modifications:</p>
+<ul class="simple">
+<li>proof-of-work: Equihash</li>
+<li>block target time: 150 seconds</li>
+<li>block size limit: 2 MB</li>
+<li>addition of zkSNARK proofs</li>
+<li>… plus other tweaks to consensus rules.</li>
+</ul>
+
+
+
+
+</article>
+<article class="slide level-3" id="addresses">
+
+<h3>Addresses</h3>
+
+<p>There are two kinds of addresses:</p>
+<ul class="simple">
+<li><cite>Transparent Addresses</cite> aka <cite>t-addrs</cite>, <code class="docutils literal"><span class="pre">t-</span></code> prefix</li>
+<li><cite>Shielded Addresses</cite> aka <cite>z-addrs</cite>, <code class="docutils literal"><span class="pre">z-</span></code> prefix</li>
+</ul>
+
+
+
+
+</article>
+<article class="slide level-3" id="t-addresses">
+
+<h3>T Addresses</h3>
+
+<p>Transparent addresses are literally Bitcoin addresses <a class="footnote-reference" href="#id6" id="id5">[3]</a>, except the
+encoding requires they begin with a <code class="docutils literal"><span class="pre">t-</span></code> prefix. The remainder of the
+encoding ensures the Bitcoin address classification.</p>
+<p>Example: <code class="docutils literal"><span class="pre">t3Vz22vK5z2LcKEdg16Yv4FFneEL1zg9ojd</span></code></p>
+<p>This is a t-addr. The initial <code class="docutils literal"><span class="pre">3</span></code> indicates a <cite>P2SH</cite> address.</p>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[3]</a></td><td>No BECH-32 addresses, currently.</td></tr>
+</tbody>
+</table>
+
+
+
+
+</article>
+<article class="slide level-3" id="z-addresses">
+
+<h3>Z Addresses</h3>
+
+<p>Shielded addresses begin with a <code class="docutils literal"><span class="pre">z-</span></code> and use zkSNARK technology.</p>
+<p>We recommend deploying support for T Addresses only, initially.</p>
+
+
+
+
+</article>
+<article class="slide level-3" id="software">
+
+<h3>Software</h3>
+
+<ul class="simple">
+<li>The primary software is <cite>zcashd</cite>, a source-fork of Bitcoin Core v0.11.2.</li>
+<li>Changes have been relatively conservative. Examples:<ul>
+<li>disabled QT wallet</li>
+<li>disabled support for platforms we can’t audit/test/focus on</li>
+<li>backporting focused on security, testability, cleanup</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+</article>
+<article class="slide level-3" id="api">
+
+<h3>API</h3>
+
+<ul class="simple">
+<li>The primary API is the RPC interface, derived from Bitcoin v0.11.2.</li>
+<li>Most calls are unaltered, except for safety or simplicity.<ul>
+<li>ex: <cite>accounts</cite> feature disabled.</li>
+</ul>
+</li>
+<li>Many API consumers who support Bitcoin can do “drop-in” Zcash support.<ul>
+<li>ex: <cite>getnewaddress</cite>, <cite>sendmany</cite>, <cite>listunspent</cite></li>
+</ul>
+</li>
+<li>Shielded address support is all in new RPC calls with a <code class="docutils literal"><span class="pre">z_</span></code> prefix.</li>
+</ul>
+
+
+
+
+</article>
+<article class="slide level-3" id="api-changes">
+
+<h3>API Changes</h3>
+
+<p>Some Bitcoin RPC calls will be necessarily different. The most prominent
+is transaction format and semantics.</p>
+<p>If your service or product does transaction parsing, inspection, or
+signing for Bitcoin, supporting Zcash is slightly more work.</p>
+
+
+
+
+</article>
+<article class="slide level-3" id="transaction-format">
+
+<h3>Transaction Format</h3>
+
+<div class="code C++ highlight-default"><div class="highlight"><pre><span></span>class CTransaction
+{
+    // …
+
+    // Bitcoin fields:
+    const int32_t nVersion;
+    const std::vector&lt;CTxIn&gt; vin;
+    const std::vector&lt;CTxOut&gt; vout;
+    const uint32_t nLockTime;
+
+    // Zcash specific:
+    const std::vector&lt;JSDescription&gt; vjoinsplit;
+    const uint256 joinSplitPubKey;
+    const joinsplit_sig_t joinSplitSig = {{0}};
+    // …
+};
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="slide level-3" id="transaction-parsing">
+
+<h3>Transaction Parsing</h3>
+
+<p>If you primarily care about <cite>vin</cite> / <cite>vout</cite>, for example, to track the
+balances of addresses, you can ignore the contents of the Zcash fields.</p>
+<p>If you need to track fees or global monetary supply, you need to parse
+fields within <cite>vjoinsplit</cite>. This is fairly straight forward and Zcash
+devs would love to help.</p>
+<p>We’ve created JS libraries, source-forked block explorers, and worked
+with wallet makers to do this parsing task.</p>
+<p>WARNING: This all assumes you are relying on <cite>zcashd</cite> to validate
+transaction consensus rules, which does the work of verifying zkSNARK
+proofs.</p>
+
+
+
+
+</article>
+<article class="slide level-2" id="zcash-integration-future-work">
+
+<h2>Zcash Integration Future Work</h2>
+
+
+
+
+
+</article>
+<article class="slide level-3" id="roadmap">
+
+<h3>Roadmap</h3>
 
 <ul class="simple">
 <li><cite>1.0.x Sprout</cite> - first gen zkSNARKs - 2016-10-28</li>
 <li><cite>1.1.x Overwinter</cite> - upgrade robustness - 2018 Q2</li>
 <li><cite>2.0.x Sapling</cite> - second gen zkSNARK - 2018 Q4</li>
 </ul>
+
+
+
+
+</article>
+<article class="slide level-3" id="sprout-support">
+
+<h3>Sprout Support</h3>
+
+<p>The <cite>1.0.x Sprout</cite> series is the currently launched “first generation”
+protocol. Shielded addresses are resource intensive and have seen modest
+adoption.</p>
+<p>Supporting <cite>1.0.x Sprout</cite> shielded addresses requires using the <code class="docutils literal"><span class="pre">z_*</span></code>
+RPC calls, and designing your infrastructure to accommodate the resource
+requirements.</p>
+<p>FIXME: How to choose to support?</p>
+
+
+
+
+</article>
+<article class="slide level-3" id="overwinter-support">
+
+<h3>Overwinter Support</h3>
+
+<p>The <cite>1.1.x Overwinter</cite> series introduces a network protocol upgrade
+primarily focused on safety for future upgrades.</p>
+<p>FIXME: How to support.</p>
+<p>FIXME: test plan and schedule.</p>
+
+
+
+
+</article>
+<article class="slide level-3" id="sapling-support">
+
+<h3>Sapling Support</h3>
+
+<p>FIXME: How to choose to support?</p>
+
+
+
+
+</article>
+<article class="slide level-3" id="fixme">
+
+<h3>FIXME</h3>
+
+<p>finish this.</p>
 
 
 
