@@ -213,7 +213,7 @@ explained later):</p>
 <ol class="arabic simple">
 <li><cite>Transparent Address</cite> support only (described later)</li>
 <li>Protocol Upgrade support</li>
-<li><cite>Shielded Address</cite> support</li>
+<li><cite>Shielded Address</cite> support - <cite>2.0.x Sapling</cite> and <em>maybe</em> <cite>1.0.x Sprout</cite></li>
 </ol>
 
 
@@ -488,8 +488,10 @@ improvements to the zkSNARK layer.</p>
 <p>Features:</p>
 <ul class="simple">
 <li>Proofs in &lt; ~10 seconds and ~40 MiB RAM</li>
-<li><code class="docutils literal"><span class="pre">O(1)</span></code> indexing for any number of shielded addresses</li>
-<li>Smaller shielded addresses with forwards compatibility for new protocol upgrades</li>
+<li><code class="docutils literal"><span class="pre">O(T)</span></code> indexing for <code class="docutils literal"><span class="pre">T</span></code> transactions with any number of shielded
+addresses</li>
+<li>Smaller shielded addresses with forwards compatibility for new protocol
+upgrades</li>
 <li>Mobile support (not consensus, but important)</li>
 </ul>
 

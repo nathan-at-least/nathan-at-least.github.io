@@ -90,7 +90,7 @@ explained later):
 
 #. `Transparent Address` support only (described later)
 #. Protocol Upgrade support
-#. `Shielded Address` support
+#. `Shielded Address` support - `2.0.x Sapling` and *maybe* `1.0.x Sprout`
 
 Protocol Basics
 ---------------
@@ -277,8 +277,10 @@ improvements to the zkSNARK layer.
 Features:
 
 - Proofs in < ~10 seconds and ~40 MiB RAM
-- ``O(1)`` indexing for any number of shielded addresses
-- Smaller shielded addresses with forwards compatibility for new protocol upgrades
+- ``O(T)`` indexing for ``T`` transactions with any number of shielded
+  addresses
+- Smaller shielded addresses with forwards compatibility for new protocol
+  upgrades
 - Mobile support (not consensus, but important)
 
 Sapling Support
