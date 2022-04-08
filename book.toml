@@ -4,3 +4,7 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Nate's Page"
+
+[build]
+# Follow gh pages convention:
+build-dir = "./docs"
