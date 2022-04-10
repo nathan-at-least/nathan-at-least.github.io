@@ -1,4 +1,4 @@
 # Summary
 
 - [Hello, World!](./hello-world.md)
-- [Site Mechanics](./site-mechanics.md)
+- [How to Automatically Deploy mdbook to GitHub Pages](./auto-deploy-howto.md)
