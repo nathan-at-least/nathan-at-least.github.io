@@ -1,0 +1,31 @@
+name: Deploy Rendered Site
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  render-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup mdBook
+      uses: peaceiris/actions-mdbook@v1
+      with:
+        mdbook-version: 'latest'
+    - uses: actions/checkout@v2
+    - run: mdbook build
+    - name: Unignore docs
+      run: sed -i 's|^docs/$||' .gitignore
+    - name: Disable jekyll
+      run: touch .nojekyll
+    - uses: EndBug/add-and-commit@v9
+      with:
+        message: 'auto deploy'
+        new_branch: gh-pages
+        pathspec_error_handling: exitAtEnd
+        push: true
