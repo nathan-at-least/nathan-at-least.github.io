@@ -21,9 +21,10 @@ jobs:
         mdbook-version: 'latest'
     - uses: actions/checkout@v2
     - run: mdbook build
+    - name: Unignore docs
+      run: sed -i 's|^docs/$||' .gitignore
     - uses: EndBug/add-and-commit@v9
       with:
-        add: './docs'
         message: 'auto deploy'
         new_branch: gh-pages
         pathspec_error_handling: exitAtEnd
