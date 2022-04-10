@@ -61,6 +61,18 @@ The final step is to tell GitHub Pages where to find the rendered site content:
 - Set source to `gh-pages` branch. You may need to create this branch first; one way is by merging a PR to `main` to trigger the deploy action to produce your first render.
 - Set the path to `docs/`.
 
+### Writing Cycle
+
+Because this rendering only occurs when you merge to `main`, it should only be used for "finished" updates you want to publish to the world. Make sure to render and review your edits as you go prior to merging a PR.
+
+On linux I use this command to quickly view the rendered version:
+
+```
+$ mdbook build && xdg-open ./docs/index.html
+```
+
+This works better for me than the `mdbook` built-in reloading webserver; do whatever works best for you.
+
 ### Fin.
 
 Now you can edit the source of your site in a clean manner without the clutter of renderings. Enjoy!
