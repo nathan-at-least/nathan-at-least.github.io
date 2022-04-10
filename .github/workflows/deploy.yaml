@@ -1,9 +1,10 @@
 name: Deploy Rendered Site
 
-on: "push"
-#on:
-#  push:
-#    branches: [ main ]
+on:
+  # FIXME: This should only trigger on merging to main.
+  push:
+    # Make sure not to trigger on push to gh-pages!
+    branches: [ deploy-action ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -20,4 +21,10 @@ jobs:
         mdbook-version: 'latest'
     - uses: actions/checkout@v2
     - run: mdbook build
-    - run: ls -laF
+    - uses: EndBug/add-and-commit@v9
+      with:
+        add: './docs'
+        message: 'auto deploy'
+        new_branch: gh-pages
+        pathspec_error_handling: exitAtEnd
+        push: true
