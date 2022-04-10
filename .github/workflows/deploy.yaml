@@ -1,10 +1,8 @@
 name: Deploy Rendered Site
 
 on:
-  # FIXME: This should only trigger on merging to main.
   push:
-    # Make sure not to trigger on push to gh-pages!
-    branches: [ deploy-action ]
+    branches: [ main ]
 
 env:
   CARGO_TERM_COLOR: always
