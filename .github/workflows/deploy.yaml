@@ -23,6 +23,8 @@ jobs:
     - run: mdbook build
     - name: Unignore docs
       run: sed -i 's|^docs/$||' .gitignore
+    - name: Disable jekyll
+      run: touch .nojekyll
     - uses: EndBug/add-and-commit@v9
       with:
         message: 'auto deploy'
