@@ -15,9 +15,9 @@ To achieve these goals, we have several components:
 
 - We use a special purpose `gh-pages` branch that *does* contain rendered output. This should be the only exception. Other branches can have human-meaningful source.
 - `mdbook` must be configured to render into `./docs` as a requirement of GitHub Pages: [book.toml](https://github.com/nathan-at-least/nathan-at-least.github.io/blob/8e77b8babaf681fa67cd08575a3b0d9dc8e85532/book.toml#L8-L10)
-- We `.gitignore` the `./docs` dir, since this is rendered output, not human-meaningful source: [.gitignore](https://github.com/nathan-at-least/nathan-at-least.github.io/blob/8e77b8babaf681fa67cd08575a3b0d9dc8e85532/.gitignore#L1)
-- We configure the GitHub repository to enable GitHub Page hosting.
+- We `.gitignore` the `docs/` dir, since this is rendered output, not human-meaningful source: [.gitignore](https://github.com/nathan-at-least/nathan-at-least.github.io/blob/8e77b8babaf681fa67cd08575a3b0d9dc8e85532/.gitignore#L1)
 - We add a `deploy.toml` GitHub Action which will deploy whenever we merge a PR to `main` branch: [.github/workflows/deploy.yaml](https://github.com/nathan-at-least/nathan-at-least.github.io/blob/f37628c2e9529562d8bed75974f8472706ee9631/.github/workflows/deploy.yaml)
+- We configure the GitHub repository to enable GitHub Page hosting.
 
 ## Setting It Up
 
@@ -59,7 +59,7 @@ The final step is to tell GitHub Pages where to find the rendered site content:
 
 - repo -> "Settings" -> "Pages"
 - Set source to `gh-pages` branch. You may need to create this branch first; one way is by merging a PR to `main` to trigger the deploy action to produce your first render.
-- Set the path to `./docs`.
+- Set the path to `docs/`.
 
 ### Fin.
 
