@@ -30,7 +30,6 @@ jobs:
         BASE_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
         git config --global user.name 'autodeploy'
         git config --global user.email 'autodeploy'
-        git fetch
         git checkout gh-pages # ensure we have local branch
         git checkout "$BASE_BRANCH"
         TMP='local-temp-branch'
@@ -40,6 +39,7 @@ jobs:
           --strategy ours \
           --commit \
           -m 'Auto-deploy: overwriting with `main` branch' \
+          --allow-unrelated-histories \
           gh-pages
         git checkout gh-pages
         git merge --ff-only "$TMP"
