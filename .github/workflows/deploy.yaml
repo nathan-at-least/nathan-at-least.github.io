@@ -31,7 +31,7 @@ jobs:
         git fetch
         TMP='local-temp-branch'
         git checkout -b "$TMP" # Same tree state as main branch
-        git log --graph --all --pretty='format:%Cred%h%Creset %C(yellow)%ai%Creset - %s <%C(bold blue)%ae%Creset>%Cgreen%d%Creset'
+        git log --graph --all --pretty='oneline'
         git merge \
           --strategy ours \
           --commit \
