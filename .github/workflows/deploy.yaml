@@ -27,7 +27,7 @@ jobs:
       run: |
         set -x
         echo 'Why the fuck is actions using an older revision of this file?!'
-        BASE_BRANCH="$(rev-parse --abbrev-ref HEAD)"
+        BASE_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
         git config --global user.name 'autodeploy'
         git config --global user.email 'autodeploy'
         git fetch
