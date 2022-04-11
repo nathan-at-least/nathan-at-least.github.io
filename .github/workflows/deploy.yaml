@@ -28,4 +28,5 @@ jobs:
         message: 'auto deploy'
         new_branch: gh-pages
         pathspec_error_handling: exitAtEnd
+        pull: '--rebase'
         push: true
