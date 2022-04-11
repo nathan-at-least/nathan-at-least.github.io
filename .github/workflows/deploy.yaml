@@ -27,6 +27,7 @@ jobs:
       run: |
         git config --global user.name 'autodeploy'
         git config --global user.email 'autodeploy'
+        git fetch
         TMP='local-temp-branch'
         git checkout -b "$TMP" # Same tree state as main branch
         git merge \
