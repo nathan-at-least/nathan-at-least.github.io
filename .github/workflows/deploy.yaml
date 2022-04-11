@@ -33,7 +33,7 @@ jobs:
           --strategy ours \
           --commit \
           -m 'Auto-deploy: overwriting with `main` branch' \
-          gh-pages
+          origin/gh-pages
         git checkout gh-pages
         git merge --ff-only "$TMP"
         git branch -d "$TMP"
