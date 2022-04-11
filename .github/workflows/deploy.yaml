@@ -25,11 +25,13 @@ jobs:
     # `gh-pages` is tracked:
     - name: Overwrite gh-pages branch with main branch
       run: |
+        set -x
         git config --global user.name 'autodeploy'
         git config --global user.email 'autodeploy'
         git fetch
         TMP='local-temp-branch'
         git checkout -b "$TMP" # Same tree state as main branch
+        git log --graph --all
         git merge \
           --strategy ours \
           --commit \
