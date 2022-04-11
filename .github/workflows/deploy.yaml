@@ -2,7 +2,7 @@ name: Deploy Rendered Site
 
 on:
   push:
-    branches: [ main ]
+    branches: [ fix-auto-deploy-git-pull-bug ]
 
 env:
   CARGO_TERM_COLOR: always
