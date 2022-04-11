@@ -26,6 +26,7 @@ jobs:
     - name: Overwrite gh-pages branch with main branch
       run: |
         set -x
+        echo 'Why the fuck is actions using an older revision of this file?!'
         BASE_BRANCH="$(rev-parse --abbrev-ref HEAD)"
         git config --global user.name 'autodeploy'
         git config --global user.email 'autodeploy'
