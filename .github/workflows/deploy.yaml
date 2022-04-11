@@ -54,5 +54,5 @@ jobs:
     - name: Commit and Push render to gh-pages
       run: |
         git add --all
-        git commit -m 'Auto-deploy: rendered output
+        git commit -m 'Auto-deploy: rendered output'
         git push
