@@ -2,8 +2,7 @@ name: Deploy Rendered Site
 
 on:
   push:
-    # TODO: This temporary brnach dev value should be `main` prior to merge:
-    branches: [ direct-git-impl ]
+    branches: [ main ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -26,7 +25,6 @@ jobs:
     - name: Overwrite gh-pages branch with main branch
       run: |
         set -x
-        echo 'Why the fuck is actions using an older revision of this file?!'
         BASE_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
         git config --global user.name 'autodeploy'
         git config --global user.email 'autodeploy'
@@ -35,7 +33,6 @@ jobs:
         git checkout "$BASE_BRANCH"
         TMP='local-temp-branch'
         git checkout -b "$TMP" # Same tree state as main branch
-        git log --graph --all --pretty='format:%h %ai - %s %d'
         git merge \
           --strategy ours \
           --commit \
@@ -45,7 +42,6 @@ jobs:
         git checkout gh-pages
         git merge --ff-only "$TMP"
         git branch -d "$TMP"
-        git log --graph --all --pretty='format:%h %ai - %s %d'
     - run: mdbook build
     - name: Unignore docs
       run: sed -i 's|^docs/$||' .gitignore
@@ -53,6 +49,7 @@ jobs:
       run: touch .nojekyll
     - name: Commit and Push render to gh-pages
       run: |
+        set -x
         git add --all
         git commit -m 'Auto-deploy: rendered output'
         git push
