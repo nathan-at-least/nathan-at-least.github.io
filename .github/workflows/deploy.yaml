@@ -18,14 +18,38 @@ jobs:
       with:
         mdbook-version: 'latest'
     - uses: actions/checkout@v2
+
+    # Each deploy overwrites the contents of `gh-pages` branch from
+    # `main`, but also introduces a merge structure so that the history of
+    # `gh-pages` is tracked:
+    - name: Overwrite gh-pages branch with main branch
+      run: |
+        set -x
+        BASE_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+        git config --global user.name 'autodeploy'
+        git config --global user.email 'autodeploy'
+        git fetch
+        git checkout gh-pages # ensure we have local branch
+        git checkout "$BASE_BRANCH"
+        TMP='local-temp-branch'
+        git checkout -b "$TMP" # Same tree state as main branch
+        git merge \
+          --strategy ours \
+          --commit \
+          -m 'Auto-deploy: overwriting with `main` branch' \
+          --allow-unrelated-histories \
+          gh-pages
+        git checkout gh-pages
+        git merge --ff-only "$TMP"
+        git branch -d "$TMP"
     - run: mdbook build
     - name: Unignore docs
       run: sed -i 's|^docs/$||' .gitignore
     - name: Disable jekyll
       run: touch .nojekyll
-    - uses: EndBug/add-and-commit@v9
-      with:
-        message: 'auto deploy'
-        new_branch: gh-pages
-        pathspec_error_handling: exitAtEnd
-        push: true
+    - name: Commit and Push render to gh-pages
+      run: |
+        set -x
+        git add --all
+        git commit -m 'Auto-deploy: rendered output'
+        git push
