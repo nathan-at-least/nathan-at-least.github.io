@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Removing Rust Boilerplate - Nate&#x27;s Page</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../hello-world.html"><strong aria-hidden="true">1.</strong> Hello, World!</a></li><li class="chapter-item expanded "><a href="../auto-deploy-howto.html"><strong aria-hidden="true">2.</strong> How to Automatically Deploy mdbook to GitHub Pages</a></li><li class="chapter-item expanded "><a href="../cheatsheets/index.html"><strong aria-hidden="true">3.</strong> Cheatsheets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cheatsheets/removing-rust-boilerplate.html" class="active"><strong aria-hidden="true">3.1.</strong> Removing Rust Boilerplate</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Nate&#x27;s Page</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="removing-rust-boilerplate"><a class="header" href="#removing-rust-boilerplate">Removing Rust Boilerplate</a></h1>
+<p><strong>Warning:</strong> I haven't carefully vetted these dependencies for security / safety (beyond using <code>cargo-audit</code>):</p>
+<p>Suggestions welcome.</p>
+<h2 id="derive_morefrom-for-enums-especially-error-enums"><a class="header" href="#derive_morefrom-for-enums-especially-error-enums"><code>derive_more::From</code> for enums, especially error enums</a></h2>
+<p>Especially useful making enum construction concise. When used with error types, this allows concisely propagating inner error types with the <code>?</code> operator:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(derive_more::From)]
+pub enum Error {
+    Stdio(std::io::Error),
+    MyApp(crate::AppError),
+}
+
+fn do_stuff() -&gt; Result&lt;(), Error&gt; {
+    // Propagate a `std::io::Error`:
+    let data = std::fs::read(&quot;/input/file&quot;)?;
+
+    // Propagate a `crate::AppError`:
+    process_data(data)?;
+    Ok(())
+}
+
+fn process_data(data: Vec&lt;u8&gt;) -&gt; Result&lt;(), crate::AppError&gt; {
+    todo!();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="derive_newnew-for-struct-new-functions"><a class="header" href="#derive_newnew-for-struct-new-functions"><code>derive_new::new</code> for struct <code>new</code> functions</a></h2>
+<p>Create a <code>new</code> method automatically.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(derive_new::new)]
+pub struct MyThing {
+    foo: String,
+    bar: bool,
+}
+
+fn do_stuff() {
+    let thing = MyThing::new(&quot;alice&quot;.to_string(), true);
+    todo!(&quot;do stuff with thing&quot;);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="testcase-for-testing-many-vectors-as-independent-tests"><a class="header" href="#testcase-for-testing-many-vectors-as-independent-tests"><code>testcase</code> for testing many vectors as independent tests</a></h2>
+<p>Sometimes you want to verify a function against a bunch of test vector inputs/outputs. If you do this in a loop in a single unit test, you cannot quickly determine which case failed, slowing down debugging.</p>
+<p>Use test case to generate separate tests for each input/output case so that failures help you more quickly find the source of the bug.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test_case(&quot;3&quot; =&gt; 3)]
+#[test_case(&quot;7&quot; =&gt; 7)]
+#[test_case(&quot;+42&quot; =&gt; 42)]
+#[test_case(&quot;-5&quot; =&gt; -5)]
+#[test_case(&quot;-0xa0&quot; =&gt; -160)]
+fn parse_int(s: &amp;str) -&gt; i32 {
+  s.parse().unwrap()
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Running <code>cargo test</code> quickly shows which cases pass/fail:</p>
+<pre><code>running 5 tests
+test parse_int::_0xa0_expects_160 ... FAILED
+test parse_int::_42_expects_42 ... ok
+test parse_int::_7_expects_7 ... ok
+test parse_int::_5_expects_5 ... ok
+test parse_int::_3_expects_3 ... ok
+</code></pre>
+<p>-so now we immediately see that our <code>.parse()</code> call doesn't work for <code>-0xa0</code> as an input, whereas the other cases are fine.</p>
+<h2 id="indoc-for-indenting-string-literals"><a class="header" href="#indoc-for-indenting-string-literals"><code>indoc</code> for indenting string literals</a></h2>
+<p>If you find yourself littering <code>\n</code> in string literals a lot, you probably would benefit in code readability with <code>indoc</code>. I find it especially useful to use in tests with <code>test_case</code> for parsers or formatters.</p>
+<h2 id="clap-derive-api-to-remove-cli-option-parsing-boilerplate"><a class="header" href="#clap-derive-api-to-remove-cli-option-parsing-boilerplate"><code>clap</code> derive API to remove cli option parsing boilerplate</a></h2>
+<p>Use <code>clap</code> with the <a href="https://github.com/clap-rs/clap/blob/v3.2.8/examples/derive_ref/README.md">derive API</a> to cut down on cli parsing boilerplate.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../cheatsheets/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../cheatsheets/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
