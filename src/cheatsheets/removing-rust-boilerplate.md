@@ -1,20 +1,31 @@
 # Removing Rust Boilerplate
 
+Remove all the boilerplate!
+
+**Warning:** I haven't carefully vetted these dependencies for security /
+safety (beyond using `cargo-audit`):
+
+<!-- toc -->
+
+# Why?
+
 Here are recipes I use to remove boilerplate from rust code. I'm a big fan of doing so for a few reasons:
 
 - This style makes it apparent to a reader at a glance what behavior is provided.
-- Using "boilerplate removal" style also helps ensure consistency.
-- If boilerplate removal is consistently used, then any boilerplate-like
-  code is more obviously unique/custom for a purpose. For example,
-  if a codebase always uses `#[derive(PartialEq)]` when possible, then
-  any custom `derive PartialEq for MyType …` can immediately cue the
-  reader that there is some unique behavior of this impl. By contrast,
-  if boilerplate is always written out, then readers have to examine
-  each case carefully to determine if it's "standard" or unique behavior.
+- More concise code is often better for readability/comprehensability.
+- Using "boilerplate removal" tools also helps ensure consistency via the tool.
 - Boilerplate-removal crates and tools can be developed and improved
   which can potentially feed improvements into consuming code, whereas
   hand-written boilerplate must be updated on a case-by-case basis.
-- More concise code is often better for readability/comprehensability.
+- If boilerplate removal is consistently used, then any boilerplate-like
+  code is more obviously unique/custom for a purpose.
+
+  For example, if a codebase always uses `#[derive(PartialEq)]` when
+  possible, then any custom `derive PartialEq for MyType …` can
+  immediately cue the reader that there is some unique behavior of this
+  impl. By contrast, if boilerplate is always written out, then readers
+  have to examine each case carefully to determine if it's "standard"
+  or unique behavior.
 
 There are potential downsides to boiler-plate removal:
 
@@ -31,10 +42,7 @@ There are potential downsides to boiler-plate removal:
 Do you have favorite boiler-plate removal not mentioned here?
 Suggestions welcome.
 
-**Warning:** I haven't carefully vetted these dependencies for security /
-safety (beyond using `cargo-audit`):
-
-## Use `std` derives
+# Use `std` derives
 
 Many `std` traits can be derived, see [this
 reference](https://doc.rust-lang.org/book/appendix-03-derivable-traits.html)
@@ -46,13 +54,13 @@ for more detail:
 - `PartialEq`, `Eq`, `PartialOrd`, `Ord`
 - `Hash`
 
-## [`derive_more`](https://docs.rs/derive_more)
+# [`derive_more`](https://docs.rs/derive_more)
 
 https://docs.rs/derive_more
 
 This crate is full of goodies to remove common trait derivations.
 
-### `derive_more::From` for enums, especially error enums
+## `derive_more::From` for enums, especially error enums
 
 Especially useful making enum construction concise. When used with error
 types, this allows concisely propagating inner error types with the
@@ -79,7 +87,7 @@ fn process_data(data: Vec<u8>) -> Result<(), crate::AppError> {
 }
 ```
 
-## [`derive_new`](https://docs.rs/derive_new) for struct `new` functions
+# [`derive_new`](https://docs.rs/derive_new) for struct `new` functions
 
 Create a `new` method automatically.
 
@@ -96,12 +104,12 @@ fn do_stuff() {
 }
 ```
 
-## [`derive_builder`](https://docs.rs/derive_builder) for builder patterns
+# [`derive_builder`](https://docs.rs/derive_builder) for builder patterns
 
 If you need a builder pattern interface, this crate can save a lot of
 tedious boilerplate.
 
-## [`anyhow`](https://docs.rs/anyhow) for concise contextual errors
+# [`anyhow`](https://docs.rs/anyhow) for concise contextual errors
 
 I've become a big fan of `anyhow` because it removes the need for
 spelling out custom error types. This can be a trade-off, though, since
@@ -115,14 +123,14 @@ relatively uncommon, I believe `anyhow` is a good option.
 Typically I try to avoid introducing `anyhow` into reusable library-style
 crates, and only use it in application-level code.
 
-## [`anyhow-std`](https://docs.rs/anyhow-std) provides error context for many `std` APIs
+# [`anyhow-std`](https://docs.rs/anyhow-std) provides error context for many `std` APIs
 
 This is a crate I created after a few too many error messages about file
 IO without understanding which path was the culprit. See above about
 whether or not to introduce `anyhow` in your API, but I definitely reach
 for this crate any time I'm writing application-level code.
 
-## [`testcase`](https://docs.rs/test-case) for testing many vectors as independent tests
+# [`testcase`](https://docs.rs/test-case) for testing many vectors as independent tests
 
 Sometimes you want to verify a function against a bunch of test vector
 inputs/outputs. If you do this in a loop in a single unit test, you
@@ -156,19 +164,19 @@ test parse_int::_3_expects_3 ... ok
 -so now we immediately see that our `.parse()` call doesn't work for
 `-0xa0` as an input, whereas the other cases are fine.
 
-## [`indoc`](https://docs.rs/indoc) for indenting string literals
+# [`indoc`](https://docs.rs/indoc) for indenting string literals
 
 If you find yourself littering `\n` in string literals a lot, you probably
 would benefit in code readability with `indoc`. I find it especially
 useful to use in tests with `test_case` for parsers or formatters.
 
-## [`clap`](https://docs.rs/clap) derive API to remove cli option parsing boilerplate
+# [`clap`](https://docs.rs/clap) derive API to remove cli option parsing boilerplate
 
 Use `clap` with the [derive
 API](https://github.com/clap-rs/clap/blob/v3.2.8/examples/derive_ref/README.md)
 to cut down on cli parsing boilerplate.
 
-## [`cargo-checkmate`](https://docs.rs/cargo-checkmate) to simplify running many checks and producing basic Github CI
+# [`cargo-checkmate`](https://docs.rs/cargo-checkmate) to simplify running many checks and producing basic Github CI
 
 This is a crate I created specifically because I got tired of repeatedly
 running different checks on each commit. By using the git hook, this
