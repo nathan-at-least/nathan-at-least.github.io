@@ -8,3 +8,7 @@ title = "Nate's Page"
 [build]
 # Follow gh pages convention:
 build-dir = "./docs"
+
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]

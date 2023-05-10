@@ -17,6 +17,8 @@ jobs:
       uses: peaceiris/actions-mdbook@v1
       with:
         mdbook-version: 'latest'
+    - name: Install mdbook-toc
+      run: cargo install mdbook-toc
     - uses: actions/checkout@v2
 
     # Each deploy overwrites the contents of `gh-pages` branch from
