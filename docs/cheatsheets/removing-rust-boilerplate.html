@@ -1,0 +1,367 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Removing Rust Boilerplate - Nate&#x27;s Page</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../hello-world.html"><strong aria-hidden="true">1.</strong> Hello, World!</a></li><li class="chapter-item expanded "><a href="../auto-deploy-howto.html"><strong aria-hidden="true">2.</strong> How to Automatically Deploy mdbook to GitHub Pages</a></li><li class="chapter-item expanded "><a href="../cheatsheets/index.html"><strong aria-hidden="true">3.</strong> Cheatsheets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cheatsheets/removing-rust-boilerplate.html" class="active"><strong aria-hidden="true">3.1.</strong> Removing Rust Boilerplate</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Nate&#x27;s Page</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="removing-rust-boilerplate"><a class="header" href="#removing-rust-boilerplate">Removing Rust Boilerplate</a></h1>
+<p>Remove all the boilerplate!</p>
+<p><strong>Warning:</strong> I haven't carefully vetted these dependencies for security /
+safety (beyond using <code>cargo-audit</code>):</p>
+<ul>
+<li><a href="#why">Why?</a></li>
+<li><a href="#use-std-derives">Use <code>std</code> derives</a></li>
+<li><a href="#derive_more"><code>derive_more</code></a>
+<ul>
+<li><a href="#derive_morefrom-for-enums-especially-error-enums"><code>derive_more::From</code> for enums, especially error enums</a></li>
+</ul>
+</li>
+<li><a href="#derive_new-for-struct-new-functions"><code>derive_new</code> for struct <code>new</code> functions</a></li>
+<li><a href="#derive_builder-for-builder-patterns"><code>derive_builder</code> for builder patterns</a></li>
+<li><a href="#anyhow-for-concise-contextual-errors"><code>anyhow</code> for concise contextual errors</a></li>
+<li><a href="#anyhow-std-provides-error-context-for-many-std-apis"><code>anyhow-std</code> provides error context for many <code>std</code> APIs</a></li>
+<li><a href="#testcase-for-testing-many-vectors-as-independent-tests"><code>testcase</code> for testing many vectors as independent tests</a></li>
+<li><a href="#indoc-for-indenting-string-literals"><code>indoc</code> for indenting string literals</a></li>
+<li><a href="#clap-derive-api-to-remove-cli-option-parsing-boilerplate"><code>clap</code> derive API to remove cli option parsing boilerplate</a></li>
+<li><a href="#cargo-checkmate-to-simplify-running-many-checks-and-producing-basic-github-ci"><code>cargo-checkmate</code> to simplify running many checks and producing basic Github CI</a></li>
+</ul>
+<h1 id="why"><a class="header" href="#why">Why?</a></h1>
+<p>Here are recipes I use to remove boilerplate from rust code. I'm a big fan of doing so for a few reasons:</p>
+<ul>
+<li>
+<p>This style makes it apparent to a reader at a glance what behavior is provided.</p>
+</li>
+<li>
+<p>More concise code is often better for readability/comprehensability.</p>
+</li>
+<li>
+<p>Using &quot;boilerplate removal&quot; tools also helps ensure consistency via the tool.</p>
+</li>
+<li>
+<p>Boilerplate-removal crates and tools can be developed and improved
+which can potentially feed improvements into consuming code, whereas
+hand-written boilerplate must be updated on a case-by-case basis.</p>
+</li>
+<li>
+<p>If boilerplate removal is consistently used, then any boilerplate-like
+code is more obviously unique/custom for a purpose.</p>
+<p>For example, if a codebase always uses <code>#[derive(PartialEq)]</code> when
+possible, then any custom <code>derive PartialEq for MyType …</code> can
+immediately cue the reader that there is some unique behavior of this
+impl. By contrast, if boilerplate is always written out, then readers
+have to examine each case carefully to determine if it's &quot;standard&quot;
+or unique behavior.</p>
+</li>
+</ul>
+<p>There are potential downsides to boiler-plate removal:</p>
+<ul>
+<li>Sometimes what you need has an impedence mismatch with some
+boilerplate-removal tool, so you may try to work around that limitation,
+and at some point it becomes more complex or cumbersome than hand-written
+code. (Maybe submit a patch to the tool! 😉)</li>
+<li>Often boiler-plate removal relies on procedural macros, which can slow
+down build times.</li>
+<li>Changes to boiler-plate removal code may change your code unexpectedly.</li>
+<li>Compiler errors stemming either from the boiler-plate removal <em>or</em> from
+your code's interaction with it may have more confusing error messages.</li>
+</ul>
+<p>Do you have favorite boiler-plate removal not mentioned here?
+Suggestions welcome.</p>
+<h1 id="use-std-derives"><a class="header" href="#use-std-derives">Use <code>std</code> derives</a></h1>
+<p>Many <code>std</code> traits can be derived, see <a href="https://doc.rust-lang.org/book/appendix-03-derivable-traits.html">this
+reference</a>
+for more detail:</p>
+<ul>
+<li><code>Clone</code></li>
+<li><code>Debug</code></li>
+<li><code>Default</code></li>
+<li><code>PartialEq</code>, <code>Eq</code>, <code>PartialOrd</code>, <code>Ord</code></li>
+<li><code>Hash</code></li>
+</ul>
+<h1 id="derive_more"><a class="header" href="#derive_more"><a href="https://docs.rs/derive_more"><code>derive_more</code></a></a></h1>
+<p>https://docs.rs/derive_more</p>
+<p>This crate is full of goodies to remove common trait derivations.</p>
+<h2 id="derive_morefrom-for-enums-especially-error-enums"><a class="header" href="#derive_morefrom-for-enums-especially-error-enums"><code>derive_more::From</code> for enums, especially error enums</a></h2>
+<p>Especially useful making enum construction concise. When used with error
+types, this allows concisely propagating inner error types with the
+<code>?</code> operator:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(derive_more::From)]
+pub enum Error {
+    Stdio(std::io::Error),
+    MyApp(crate::AppError),
+}
+
+fn do_stuff() -&gt; Result&lt;(), Error&gt; {
+    // Propagate a `std::io::Error`:
+    let data = std::fs::read(&quot;/input/file&quot;)?;
+
+    // Propagate a `crate::AppError`:
+    process_data(data)?;
+    Ok(())
+}
+
+fn process_data(data: Vec&lt;u8&gt;) -&gt; Result&lt;(), crate::AppError&gt; {
+    todo!();
+}
+<span class="boring">}</span></code></pre></pre>
+<h1 id="derive_new-for-struct-new-functions"><a class="header" href="#derive_new-for-struct-new-functions"><a href="https://docs.rs/derive_new"><code>derive_new</code></a> for struct <code>new</code> functions</a></h1>
+<p>Create a <code>new</code> method automatically.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(derive_new::new)]
+pub struct MyThing {
+    foo: String,
+    bar: bool,
+}
+
+fn do_stuff() {
+    let thing = MyThing::new(&quot;alice&quot;.to_string(), true);
+    todo!(&quot;do stuff with thing&quot;);
+}
+<span class="boring">}</span></code></pre></pre>
+<h1 id="derive_builder-for-builder-patterns"><a class="header" href="#derive_builder-for-builder-patterns"><a href="https://docs.rs/derive_builder"><code>derive_builder</code></a> for builder patterns</a></h1>
+<p>If you need a builder pattern interface, this crate can save a lot of
+tedious boilerplate.</p>
+<h1 id="anyhow-for-concise-contextual-errors"><a class="header" href="#anyhow-for-concise-contextual-errors"><a href="https://docs.rs/anyhow"><code>anyhow</code></a> for concise contextual errors</a></h1>
+<p>I've become a big fan of <code>anyhow</code> because it removes the need for
+spelling out custom error types. This can be a trade-off, though, since
+&quot;transparent&quot; error types are more ergonomic if the consuming code needs
+to frequently behave differently based on different error types.</p>
+<p>Keep in mind consumers can <em>still</em> distinguish specific errors and
+behave accordingly with slightly more verbose code, so assuming that's
+relatively uncommon, I believe <code>anyhow</code> is a good option.</p>
+<p>Typically I try to avoid introducing <code>anyhow</code> into reusable library-style
+crates, and only use it in application-level code.</p>
+<h1 id="anyhow-std-provides-error-context-for-many-std-apis"><a class="header" href="#anyhow-std-provides-error-context-for-many-std-apis"><a href="https://docs.rs/anyhow-std"><code>anyhow-std</code></a> provides error context for many <code>std</code> APIs</a></h1>
+<p>This is a crate I created after a few too many error messages about file
+IO without understanding which path was the culprit. See above about
+whether or not to introduce <code>anyhow</code> in your API, but I definitely reach
+for this crate any time I'm writing application-level code.</p>
+<h1 id="testcase-for-testing-many-vectors-as-independent-tests"><a class="header" href="#testcase-for-testing-many-vectors-as-independent-tests"><a href="https://docs.rs/test-case"><code>testcase</code></a> for testing many vectors as independent tests</a></h1>
+<p>Sometimes you want to verify a function against a bunch of test vector
+inputs/outputs. If you do this in a loop in a single unit test, you
+cannot quickly determine which case failed, slowing down debugging.</p>
+<p>Use test case to generate separate tests for each input/output case so
+that failures help you more quickly find the source of the bug.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test_case(&quot;3&quot; =&gt; 3)]
+#[test_case(&quot;7&quot; =&gt; 7)]
+#[test_case(&quot;+42&quot; =&gt; 42)]
+#[test_case(&quot;-5&quot; =&gt; -5)]
+#[test_case(&quot;-0xa0&quot; =&gt; -160)]
+fn parse_int(s: &amp;str) -&gt; i32 {
+  s.parse().unwrap()
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Running <code>cargo test</code> quickly shows which cases pass/fail:</p>
+<pre><code>running 5 tests
+test parse_int::_0xa0_expects_160 ... FAILED
+test parse_int::_42_expects_42 ... ok
+test parse_int::_7_expects_7 ... ok
+test parse_int::_5_expects_5 ... ok
+test parse_int::_3_expects_3 ... ok
+</code></pre>
+<p>-so now we immediately see that our <code>.parse()</code> call doesn't work for
+<code>-0xa0</code> as an input, whereas the other cases are fine.</p>
+<h1 id="indoc-for-indenting-string-literals"><a class="header" href="#indoc-for-indenting-string-literals"><a href="https://docs.rs/indoc"><code>indoc</code></a> for indenting string literals</a></h1>
+<p>If you find yourself littering <code>\n</code> in string literals a lot, you probably
+would benefit in code readability with <code>indoc</code>. I find it especially
+useful to use in tests with <code>test_case</code> for parsers or formatters.</p>
+<h1 id="clap-derive-api-to-remove-cli-option-parsing-boilerplate"><a class="header" href="#clap-derive-api-to-remove-cli-option-parsing-boilerplate"><a href="https://docs.rs/clap"><code>clap</code></a> derive API to remove cli option parsing boilerplate</a></h1>
+<p>Use <code>clap</code> with the <a href="https://github.com/clap-rs/clap/blob/v3.2.8/examples/derive_ref/README.md">derive
+API</a>
+to cut down on cli parsing boilerplate.</p>
+<h1 id="cargo-checkmate-to-simplify-running-many-checks-and-producing-basic-github-ci"><a class="header" href="#cargo-checkmate-to-simplify-running-many-checks-and-producing-basic-github-ci"><a href="https://docs.rs/cargo-checkmate"><code>cargo-checkmate</code></a> to simplify running many checks and producing basic Github CI</a></h1>
+<p>This is a crate I created specifically because I got tired of repeatedly
+running different checks on each commit. By using the git hook, this
+helps me ensure a crate or workspace builds, passes clippy tests,
+generates docs without warnings, etc…</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../cheatsheets/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../cheatsheets/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
